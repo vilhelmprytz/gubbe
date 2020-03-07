@@ -1,0 +1,11 @@
+site_name: Gubbe
+repo_url: https://github.com/VilhelmPrytz/gubbe
+edit_uri: /VilhelmPrytz/gubbe/tree/master/docs
+
+nav:
+  - Introduction: 'index.md'
+
+theme: readthedocs
+markdown_extensions:
+    - admonition:
+    - mdx_truly_sane_lists

@@ -1,0 +1,9 @@
+__pycache__
+*.pyc
+gubbe.egg-info
+build
+dist
+.eggs
+
+# IDE
+.vscode

@@ -1,0 +1,27 @@
+language: python
+os: linux
+
+before_install:
+    - python -m pip install --upgrade pip
+install:
+    - pip install black flake8
+
+script:
+    - black . --check
+    - flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    - flake8 . --count --exit-zero --max-complexity=10 --statistics
+
+before_deploy:
+    - jq -r '.default | to_entries[] | .key + .value.version' Pipfile.lock > requirements.txt
+    - pip install -r requirements.txt
+    - sed -i "s/development/$TRAVIS_COMMIT/g" gubbe/version.py
+    - sed -i "s/YYYY-MM-DD/`git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d`/g" gubbe/version.py
+    - rm -rf requirements.txt
+deploy:
+    - provider: pypi
+      skip_cleanup: true
+      user: __token__
+      password: "NOT_YET_SET"
+      distributions: "sdist bdist_wheel"
+      on:
+        tags: true
