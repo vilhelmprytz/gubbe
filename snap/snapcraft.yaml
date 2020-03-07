@@ -1,0 +1,33 @@
+name: gubbe
+base: core18
+version: git # set version on release ('v0.1.0') and use 'git' during dev
+summary: Manage Minecraft plugins with ease! # 79 char long summary
+description: |
+  A command-line interface for managing Minecraft plugins locally.
+
+grade: devel # 'stable' on release ('devel' during dev)
+confinement: strict
+
+parts:
+  gubbe:
+    override-build: |
+      sed -i "s/development/`git log -1 --format="%H"`/g" gubbe/version.py
+      sed -i "s/YYYY-MM-DD/`git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d`/g" gubbe/version.py
+      snapcraftctl build
+    plugin: python
+    source: .
+    build-packages:
+      - python3-distutils
+      - build-essential
+
+apps:
+  gubbe:
+    command: bin/gubbe
+    plugs:
+      # - home
+      # - removable-media
+      - network
+    environment:
+      PYTHONIOENCODING: utf-8
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8

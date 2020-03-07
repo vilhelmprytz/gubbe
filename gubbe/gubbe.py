@@ -60,9 +60,45 @@ def cli():
     """
     Gubbe
 
-    Manage Minecraft Plugins with ease!
+    Manage Minecraft plugins with ease!
 
     Source code - https://github.com/VilhelmPrytz/gubbe
+    """
+
+    pass
+
+
+@cli.command()
+def init():
+    """
+    Initiate current directory with Gubbe
+    """
+
+    pass
+
+
+@cli.command()
+def list():
+    """
+    List currently installed plugins.
+    """
+
+    pass
+
+
+@cli.command()
+def install():
+    """
+    Install a new plugin.
+    """
+
+    pass
+
+
+@cli.command()
+def update():
+    """
+    Update installed plugins.
     """
 
     pass
