@@ -5,5 +5,9 @@ build
 dist
 .eggs
 
+# gubbe
+gubbe.json
+*.jar
+
 # IDE
 .vscode

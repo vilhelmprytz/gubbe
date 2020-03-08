@@ -16,6 +16,11 @@ import codecs
 import locale
 
 from gubbe.version import version, commit_date, commit_hash
+from gubbe.config import Config
+from gubbe.jar_detector import JARDetector
+
+config = Config()
+jar_detector = JARDetector()
 
 
 def main():
@@ -73,6 +78,35 @@ def init():
     """
     Initiate current directory with Gubbe
     """
+
+    if len(jar_detector.files) > 1:
+        selected = None
+        while selected == None:
+            click.echo(
+                "Multiple JAR files detected. Select the JAR file you are using."
+            )
+            for i in range(len(jar_detector.files)):
+                click.echo(
+                    f"{i} - {jar_detector.files[i]['filename']} detected version {jar_detector.files[i]['version']}"
+                )
+
+            user_selection = click.prompt("Select JAR file", default=0)
+
+            if 0 <= int(user_selection) <= len(jar_detector.files) - 1:
+                selected = jar_detector.files[int(user_selection)]
+
+    if len(jar_detector.files) == 1:
+        selected = jar_detector.files[0]
+
+    if len(jar_detector.files) == 0:
+        click.echo("No JAR files detected.")
+        exit(1)
+
+    if selected["version"] == None:
+        click.echo("Unable to automatically identify Minecraft version.")
+        selected["version"] = click.prompt("Minecraft version", default="1.15.2")
+
+    config.create(selected["filename"], selected["version"])
 
     pass
 
